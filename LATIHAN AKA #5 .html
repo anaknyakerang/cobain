@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Latihan Kompleksitas Algoritma</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Nunito:wght@400;700&display=swap">
+<style>
+:root{--bg:#eef2ff;--grid:#dbe2fb;--card:#fff;--ink:#1f1b3a;--mute:#5d5a7a;--pri:#6c4cf1;--priInk:#fff;--ok:#12a574;--okBg:#dcf7ec;--bad:#e5484d;--badBg:#fde4e5;--hint:#fff3bf;--code:#272347;--codeInk:#f4f1ff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15132b;--grid:#211e40;--card:#201d3d;--ink:#f1eeff;--mute:#aaa6d0;--pri:#9a85ff;--priInk:#15132b;--ok:#3ed9a0;--okBg:#12372e;--bad:#ff7a80;--badBg:#431d24;--hint:#4a4120;--code:#0f0d20;--codeInk:#f4f1ff}}
+:root[data-theme="dark"]{--bg:#15132b;--grid:#211e40;--card:#201d3d;--ink:#f1eeff;--mute:#aaa6d0;--pri:#9a85ff;--priInk:#15132b;--ok:#3ed9a0;--okBg:#12372e;--bad:#ff7a80;--badBg:#431d24;--hint:#4a4120;--code:#0f0d20;--codeInk:#f4f1ff}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font-family:Nunito,system-ui,sans-serif;line-height:1.55}
+main{max-width:720px;margin:0 auto;padding:20px 16px 60px}
+h1,h2,h3{font-family:'Baloo 2',system-ui,sans-serif;line-height:1.15;margin:0 0 8px}
+h1{font-size:2.3rem}h2{font-size:1.5rem}h3{font-size:1.1rem}
+.card{background:var(--card);border:2.5px solid var(--ink);border-radius:18px;padding:16px;margin:14px 0;box-shadow:4px 4px 0 var(--ink)}
+.mascot{font-size:4rem;display:inline-block;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-5deg)}}
+@media (prefers-reduced-motion:reduce){.mascot{animation:none}}
+pre{background:var(--code);color:var(--codeInk);border-radius:12px;padding:12px;overflow-x:auto;margin:10px 0;font-size:.85rem;line-height:1.45}
+code{font-family:ui-monospace,Menlo,Consolas,monospace}
+button,input{font:inherit}
+.btn{background:var(--pri);color:var(--priInk);border:2.5px solid var(--ink);border-radius:14px;padding:10px 18px;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:1.05rem;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn.ghost{background:var(--card);color:var(--ink)}
+.btn.sm{font-size:.85rem;padding:4px 10px;margin-top:6px}
+input[type=text]{width:100%;padding:10px 12px;border:2.5px solid var(--ink);border-radius:12px;background:var(--bg);color:var(--ink);margin-top:8px}
+input:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+details{background:var(--hint);border-radius:12px;padding:8px 12px;margin-top:8px}
+summary{cursor:pointer;font-weight:700}
+.bar{height:12px;background:var(--grid);border:2px solid var(--ink);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--pri)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.res{border-radius:12px;padding:10px 12px;margin-top:10px}
+.res.ok{background:var(--okBg)}.res.bad{background:var(--badBg)}
+.tag{font-weight:700}.ok .tag{color:var(--ok)}.bad .tag{color:var(--bad)}
+.score{font-family:'Baloo 2',sans-serif;font-size:3rem;line-height:1}
+.mute{color:var(--mute)}
+table{width:100%;border-collapse:collapse}td,th{padding:6px 4px;border-bottom:1.5px dashed var(--mute);text-align:left}
+.ex{margin-top:6px}.fmt{font-size:.85rem;color:var(--mute);margin-top:6px}.guide td:first-child{white-space:nowrap;font-weight:700}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+const C = {
+mystery:`function Mystery(n)
+  comment input: nonnegative integer n
+  S ← 0
+  for i ← 1 to n do
+    S ← S + i * i
+  return S`,
+ge:`function GE(A[0..n-1,0..n])
+  for i ← 0 to n-2 do
+    for j ← i+1 to n-1 do
+      for k ← i to n do
+        A[j,k] ← A[j,k] - A[i,k]*A[j,i]/A[i,i]
+  return S`,
+enigma:`function Enigma(A[0..n-1,0..n-1])
+  for i ← 0 to n-2 do
+    for j ← i+1 to n-1 do
+      if A[i,j] ≠ A[j,i] then
+        return false
+  return true`,
+a:`int sum = 0; int num = 35;
+for (int i = 1; i <= 2*n; i++) {
+  for (int j = 1; j <= n; j++) {
+    num += j * 3;
+    sum += num;
+  }
+}
+for (int k = 1; k <= n; k++) {
+  sum++;
+}`,
+b:`int sum = 0; int num = 35;
+for (int i = 1; i <= 2*n; i++) {
+  for (int j = 1; j <= n; j++) {
+    num += j * 3;
+    sum += num;
+  }
+}
+for (int i = 1; i <= n; i++) {
+  for (int j = 1; j <= n; j++) {
+    for (int k = 1; k <= n; k++) {
+      num += j * 3;
+    }
+  }
+}`,
+c:`int sum = 0;
+for (int i = 1; i <= n; i++) {
+  for (int j = 1; j <= m; j++) {
+    sum++;
+  }
+}`,
+d:`int sum = 0;
+for (int i = 1; i < n; i++) {
+  sum++;
+}`,
+e:`int sum = 0;
+for (int i = 1; i < n; i=i+2) {
+  sum++;
+}`,
+f:`int sum = 0;
+for (int i = 1; i <= n; i++) {
+  for (int j = 1; j <= n/2; j++) {
+    sum++;
+  }
+}`,
+g:`int sum = 0;
+for (int i = 1; i < n; i = i*2) {
+  sum++;
+}`,
+h:`int sum = 0;
+for (int i = 1; i < n; i=i+2) {
+  for (int j = 1; j < i; j++) {
+    sum++;
+  }
+}`};
+const cls=(q,hint,ex,ok,key)=>[{q,hint,ex,t:'cls',ok,key}];
+const Q=[
+{n:'Mystery',code:C.mystery,intro:'Algoritma Mystery',parts:[
+ {q:'a) Nilai apakah yang dihitung oleh fungsi tersebut?',t:'txt',ok:[/kuadrat|square|i2|12\+22|sigma|σ|∑|nn\+12n\+1\/6|n\(n\+1\)\(2n\+1\)\/6/],key:'S = 1² + 2² + … + n² = n(n+1)(2n+1)/6',
+  hint:'Jalankan dengan tangan dulu: n=1 → S=1; n=2 → S=1+4=5; n=3 → S=5+9=14. Setiap putaran menambahkan i*i, yaitu i². Jadi S adalah jumlah kuadrat dari 1 sampai n.',
+  ex:'<b>Cara menghitung:</b><br>1) Awal S=0.<br>2) Putaran i menambah i·i = i² ke S.<br>3) Setelah loop selesai: S = 1²+2²+…+n² = Σ i² (i=1..n).<br>4) Rumus deret kuadrat: <b>n(n+1)(2n+1)/6</b>.<br>5) Cek n=3: 3·4·7/6 = 84/6 = 14 ✔ (sama dengan hasil tracing).'},
+ {q:'b) Apakah operasi dasar dari algoritma tersebut?',t:'txt',ok:[/kali|multipl|perkalian|\*|×/],key:'Perkalian (i * i)',
+  hint:'Operasi dasar = operasi yang paling sering dieksekusi dan paling dominan waktunya, biasanya ada di loop terdalam. Di dalam loop ada penjumlahan (+) dan perkalian (*). Mana yang lebih mahal untuk CPU?',
+  ex:'Di badan loop ada dua operasi aritmetika: <code>+</code> dan <code>*</code>. Prioritas memilih operasi dasar: (1) berada di loop terdalam, (2) dieksekusi paling banyak, (3) kalau frekuensinya sama, pilih yang paling mahal waktunya. Keduanya jalan n kali, tetapi perkalian butuh lebih banyak siklus CPU daripada penjumlahan, jadi yang dipilih adalah <b>perkalian i*i</b>. Penjumlahan dan perkalian sama-sama n kali, sehingga kelas efisiensinya tidak berubah, hanya konvensi pemilihan yang berbeda.'},
+ {q:'c) Berapa kali operasi dasar tersebut dieksekusi?',t:'fm',ok:[/^n$/,/^n(kali|times)$/],key:'n kali',
+  hint:'Tulis sebagai sigma: C(n) = Σ dari i=1 sampai n dari 1. Rumusnya Σ 1 (a..b) = b − a + 1.',
+  ex:'C(n) = Σ<sub>i=1..n</sub> 1 = n − 1 + 1 = <b>n</b>.'},
+ {q:'d) Apa kelas efisiensi dari algoritma tersebut?',t:'cls',ok:['n'],key:'Θ(n)',
+  hint:'C(n) = n adalah fungsi linear. Kelas efisiensi hanya menyimpan suku dominan.',
+  ex:'C(n) = n tumbuh linear, sehingga algoritma berada di kelas <b>Θ(n)</b>.'}]},
+{n:'GE',code:C.ge,intro:'Algoritma GE (Gaussian Elimination)',parts:[
+ {q:'Tentukan kelas efisiensi algoritma GE.',t:'cls',ok:['n3'],key:'Θ(n³)',
+  hint:'Basic operation: baris update A[j,k] (perkalian). Tulis C(n) dengan 3 sigma bersarang: Σ(i=0..n−2) Σ(j=i+1..n−1) Σ(k=i..n) 1. Selesaikan dari sigma paling dalam. Σ 1 (a..b) = b−a+1.',
+  ex:'Sigma k: n−i+1. Sigma j: berulang (n−1)−(i+1)+1 = n−i−1 kali, jadi (n−i+1)(n−i−1) = (n−i)²−1. Sigma i: dengan m=n−i (m=2..n), Σ (m²−1) ≈ n³/3. Jadi C(n) ≈ n³/3 ∈ <b>Θ(n³)</b>.'}]},
+{n:'Enigma',code:C.enigma,intro:'Algoritma Enigma',parts:[
+ {q:'a) Apakah yang dilakukan oleh fungsi tersebut?',t:'txt',ok:[/simetri|symmetr/],key:'Mengecek apakah matriks simetris',
+  hint:'Bandingkan A[i,j] dengan A[j,i]: elemen di atas diagonal dengan pasangan cerminnya. Kalau semua pasangan sama, matriks punya sifat apa?',
+  ex:'Matriks yang A[i,j] = A[j,i] untuk semua i,j disebut <b>simetris</b>. Fungsi ini mengembalikan true jika simetris dan false jika ketemu satu pasangan yang berbeda.'},
+ {q:'b) Apakah operasi dasar dari algoritma tersebut?',t:'txt',ok:[/bandingkan|perbandingan|compar|≠|!=|<>|a\[i,?j\]/],key:'Perbandingan A[i,j] ≠ A[j,i]',
+  hint:'Cari operasi yang ada di loop terdalam dan dieksekusi paling sering. Di sini isi loop hanya sebuah if.',
+  ex:'Loop terdalam hanya berisi pengecekan <code>A[i,j] ≠ A[j,i]</code>, sehingga operasi dasarnya adalah <b>perbandingan elemen matriks</b>.'},
+ {q:'c) Berapa kali operasi dasar dieksekusi (kasus terburuk)?',t:'fm',ok:[/^nn-1\/2$/,/^n2-n\/2$/,/^1\/2nn-1$/,/^1\/2n2-1\/2n$/,/^n2\/2-n\/2$/,/^nn-1\*?0\.5$/],key:'n(n−1)/2',
+  hint:'Kasus terburuk: tidak pernah return false, jadi semua pasangan diperiksa. C(n) = Σ(i=0..n−2) Σ(j=i+1..n−1) 1. Sigma dalam = (n−1)−(i+1)+1 = n−1−i. Lalu jumlahkan n−1−i untuk i=0..n−2 (deret aritmetika: (n−1)+(n−2)+…+1).',
+  ex:'(n−1)+(n−2)+…+1 = (n−1)n/2 = <b>n(n−1)/2</b> = (n²−n)/2.'},
+ {q:'d) Apa kelas efisiensi (kasus terburuk)?',t:'cls',ok:['n2'],key:'Θ(n²)',
+  hint:'Ambil suku dominan dari n(n−1)/2 = n²/2 − n/2, buang konstanta.',
+  ex:'n²/2 − n/2 ∈ <b>Θ(n²)</b>. (Kasus terbaik: A[0,1] ≠ A[1,0] langsung return, sehingga Θ(1).)'}]},
+{n:'Latihan a)',code:C.a,intro:'Kompleksitas asimtotik soal a)',parts:cls('Tentukan kompleksitas asimtotik (Θ).','Pisahkan menjadi dua blok yang berurutan, lalu jumlahkan. Blok 1: i berjalan 2n kali, j berjalan n kali. Blok 2: satu loop k berjalan n kali. Untuk loop berurutan, ambil yang terbesar.','Blok 1 = 2n·n = 2n². Blok 2 = n. Total = 2n²+n ∈ <b>Θ(n²)</b>; suku n² mendominasi.',['n2'],'Θ(n²)')},
+{n:'Latihan b)',code:C.b,intro:'Kompleksitas asimtotik soal b)',parts:cls('Tentukan kompleksitas asimtotik (Θ).','Blok 1: i dari 1..2n dan j dari 1..n. Blok 2: tiga loop bersarang (i, j, k), masing-masing n kali. Hitung masing-masing, lalu jumlahkan.','Blok 1 = 2n². Blok 2 = n·n·n = n³. Total = n³+2n² ∈ <b>Θ(n³)</b>.',['n3'],'Θ(n³)')},
+{n:'Latihan c)',code:C.c,intro:'Kompleksitas asimtotik soal c)',parts:cls('Tentukan kompleksitas asimtotik (Θ).','Perhatikan batas loop: i sampai n, tapi j sampai m (variabel berbeda). Kalikan jumlah iterasi kedua loop.','Total = n·m iterasi. n dan m variabel independen, jadi tidak bisa disederhanakan: <b>Θ(nm)</b>.',['nm','mn'],'Θ(n·m)')},
+{n:'Latihan d)',code:C.d,intro:'Kompleksitas asimtotik soal d)',parts:cls('Tentukan kompleksitas asimtotik (Θ).','Perhatikan batasnya: i < n (bukan <=). Hitung i = 1 sampai n−1.','Iterasi = (n−1)−1+1 = n−1 ∈ <b>Θ(n)</b>. Konstanta −1 dibuang.',['n'],'Θ(n)')},
+{n:'Latihan e)',code:C.e,intro:'Kompleksitas asimtotik soal e)',parts:cls('Tentukan kompleksitas asimtotik (Θ).','Perhatikan langkahnya: i = i+2. Tulis nilai i: 1, 3, 5, 7, … sampai < n. Ada berapa nilai?','Ada sekitar n/2 iterasi. Konstanta 1/2 dibuang, sehingga <b>Θ(n)</b>.',['n'],'Θ(n)')},
+{n:'Latihan f)',code:C.f,intro:'Kompleksitas asimtotik soal f)',parts:cls('Tentukan kompleksitas asimtotik (Θ).','Tulis dengan sigma: Σ(i=1..n) Σ(j=1..n/2) 1. Sigma dalam tidak bergantung pada i.','Sigma dalam = n/2. Sigma luar = n·(n/2) = n²/2 ∈ <b>Θ(n²)</b>.',['n2'],'Θ(n²)')},
+{n:'Latihan g)',code:C.g,intro:'Kompleksitas asimtotik soal g)',parts:cls('Tentukan kompleksitas asimtotik (Θ).','Langkahnya i = i*2. Tulis nilai i: 1, 2, 4, 8, … = 2^k. Berhenti saat 2^k ≥ n. Cari k dengan logaritma basis 2.','Iterasi berhenti saat 2^k ≥ n, yaitu k ≈ ⌈log₂ n⌉. Jadi <b>Θ(log n)</b>. Basis log tidak penting secara asimptotik.',['logn'],'Θ(log n)')},
+{n:'Latihan h)',code:C.h,intro:'Kompleksitas asimtotik soal h)',parts:cls('Tentukan kompleksitas asimtotik (Θ).','i = 1, 3, 5, … (naik 2). Loop j berjalan dari 1 sampai i−1, jadi iterasinya i−1 = 0, 2, 4, 6, … Jumlahkan deret itu. Ada sekitar n/2 suku.','Dengan i = 2k+1, iterasi j = 2k. Σ(k=0..m) 2k = m(m+1) dengan m ≈ n/2, sehingga ≈ n²/4 ∈ <b>Θ(n²)</b>.',['n2'],'Θ(n²)')}
+];
+const FMT={cls:'Tulis kelasnya saja, mis. <code>n^2</code>, <code>n^3</code>, <code>log n</code>, <code>n*m</code> (boleh pakai Θ( ) atau O( ))',txt:'Tulis kata atau kalimat singkat, mis. <code>perkalian</code> atau <code>1^2+2^2+...+n^2</code>',fm:'Tulis rumus: <code>*</code> kali, <code>/</code> bagi, <code>^</code> pangkat, mis. <code>n(n-1)/2</code>'};
+const app=document.getElementById('app');
+FMT.fm='Tulis rumus C(n) lengkap. Pakai <code>*</code> kali, <code>/</code> bagi, <code>^</code> pangkat, kurung boleh, mis. <code>n(n-1)/2</code> atau <code>2n^2+n</code>. Bentuk yang setara dihitung benar (mis. <code>n(n-1)(2n+5)/6</code> = <code>(2n^3+3n^2-5n)/6</code>).';
+function evalF(p,a){
+ let s=a.toLowerCase();
+ if(s.includes('='))s=s.slice(s.lastIndexOf('=')+1);
+ s=s.replace(/²/g,'^2').replace(/³/g,'^3').replace(/−/g,'-').replace(/[×·]/g,'*').replace(/[⌈⌊]/g,'(').replace(/[⌉⌋]/g,')').replace(/\s+/g,'').replace(/log₂|log2|log/g,'@l').replace(/ceil/g,'@c');
+ s=s.replace(/(@[lc])([nm])/g,'$1($2)');
+ if(!/^[0-9nm+\-*\/().^@lc]+$/.test(s))return false;
+ s=s.replace(/\^/g,'**').replace(/(\d|\))(?=[nm(@])/g,'$1*').replace(/([nm])(?=[nm(@])/g,'$1*').replace(/@l/g,'Math.log2').replace(/@c/g,'Math.ceil');
+ try{const fn=new Function('n','m','return '+s);const fs=Array.isArray(p.f)?p.f:[p.f];
+  return fs.some(f=>[[5,3],[7,4],[10,6],[16,5]].every(([n,m])=>{const v=fn(n,m),w=f(n,m);return isFinite(v)&&Math.abs(v-w)<1e-6*Math.max(1,Math.abs(w))}))}catch(e){return false}
+}
+Q[2].parts[2].f=n=>n*(n-1)/2;
+[[1,n=>n*(n-1)*(2*n+5)/6,'(2n³+3n²−5n)/6 = n(n−1)(2n+5)/6'],
+[3,n=>2*n*n+n,'2n² + n'],
+[4,n=>n*n*n+2*n*n,'n³ + 2n²'],
+[5,(n,m)=>n*m,'n·m'],
+[6,n=>n-1,'n − 1'],
+[7,[n=>Math.ceil((n-1)/2),n=>n/2,n=>(n-1)/2],'⌈(n−1)/2⌉ ≈ n/2'],
+[8,n=>n*n/2,'n²/2'],
+[9,[n=>Math.ceil(Math.log2(n)),n=>Math.log2(n)],'⌈log₂ n⌉'],
+[10,[n=>{const m=Math.ceil((n-1)/2);return m*(m-1)},n=>n*n/4,n=>n*(n-2)/4],'≈ n²/4 (tepatnya m(m−1), dengan m = ⌈(n−1)/2⌉)']
+].forEach(([i,f,key])=>{
+ const old=Q[i].parts[0];
+ const cnt={q:'a) Hitung C(n): berapa kali statement di dalam loop dieksekusi?',t:'fm',f:f,key:'C(n) = '+key,hint:old.hint,ex:old.ex};
+ old.q='b) Tentukan kelas efisiensi (Θ) dari C(n) tadi.';
+ old.hint='Ambil suku berpangkat tertinggi dari C(n) di bagian a), lalu buang konstanta dan suku yang lebih kecil.';
+ old.ex='Dari C(n) = '+key+', suku dominannya memberi <b>'+old.key+'</b>.';
+ Q[i].parts.unshift(cnt);
+});
+let cur=0,res=[];
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+function normCls(s){s=s.toLowerCase().replace(/²/g,'2').replace(/³/g,'3').replace(/\s+/g,'').replace(/θ|ϴ|theta|big|omega|ω/g,'').replace(/o\(/g,'(').replace(/[()^*·×x_]/g,'').replace(/log2?/g,'log');return s}
+function normFm(s){return s.toLowerCase().replace(/²/g,'2').replace(/−/g,'-').replace(/\s+/g,'').replace(/[()^*·×]/g,function(c){return c==='('||c===')'?'':''})}
+function test(p,a){
+ if(p.f)return evalF(p,a);
+ if(p.t==='cls'){const n=normCls(a);return p.ok.includes(n)}
+ if(p.t==='fm'){const raw=a.toLowerCase().replace(/²/g,'^2').replace(/−/g,'-').replace(/\s+/g,'').replace(/[×·*]/g,'');const n=raw.replace(/[()^]/g,'');return p.ok.some(r=>r.test(n)||r.test(raw))}
+ const n=a.toLowerCase().replace(/²/g,'2').replace(/\^/g,'').replace(/\s+/g,'');return p.ok.some(r=>r.test(n))}
+function start(){app.innerHTML=`<div class="card" style="text-align:center"><div class="mascot">🦉</div><h1>Latihan Kompleksitas Algoritma</h1><p class="mute">11 soal dari slide CII2C2. Kamu dapat hint dulu, lalu jawab, lalu dapat nilai dan resume jawabanmu.</p><button class="btn" id="go">Mulai dari soal 1</button></div>`;document.getElementById('go').onclick=()=>{cur=0;res=[];ask()}}
+function head(){return `<div class="row"><h2>Soal ${cur+1} dari ${Q.length}</h2><span class="mute">${esc(Q[cur].n)}</span></div><div class="bar"><i style="width:${(cur/Q.length)*100}%"></i></div>`}
+function ask(){const q=Q[cur];
+ app.innerHTML=`${head()}<div class="card"><h3>${esc(q.intro)}</h3><pre><code>${esc(q.code)}</code></pre></div><details><summary>📌 Cara menulis jawaban</summary><table class="guide"><tr><td>Pangkat</td><td><code>n^2</code>, <code>n^3</code> (n², n³ juga boleh)</td></tr><tr><td>Kali</td><td><code>*</code> → <code>n*m</code></td></tr><tr><td>Bagi</td><td><code>/</code> → <code>n(n-1)/2</code></td></tr><tr><td>Logaritma</td><td><code>log n</code> atau <code>log2 n</code></td></tr><tr><td>Kelas efisiensi</td><td><code>n^2</code>, <code>Θ(n^2)</code>, atau <code>O(n^2)</code>. Tanpa konstanta: tulis <code>n^2</code>, bukan <code>n^2/2</code></td></tr><tr><td>Jawaban kata</td><td>Cukup kata kunci, mis. <code>perkalian</code>, <code>simetris</code>, <code>perbandingan</code></td></tr></table></details>`+
+ q.parts.map((p,i)=>`<div class="card"><b>${esc(p.q)}</b><details><summary>💡 Hint</summary><div class="ex">${p.hint}</div></details><input type="text" id="in${i}" autocomplete="off" placeholder="Tulis jawabanmu di sini"><div class="fmt">✍️ ${FMT[p.t]}</div></div>`).join('')+
+ `<button class="btn" id="chk">Cek jawaban</button>`;
+ document.getElementById('chk').onclick=()=>{const parts=q.parts.map((p,i)=>{const a=document.getElementById('in'+i).value.trim();return{a,ok:a?test(p,a):false}});res[cur]=parts;result()}}
+function sc(r){return Math.round(r.filter(x=>x.ok).length/r.length*100)}
+function result(){const q=Q[cur],r=res[cur],s=sc(r);
+ const emo=s===100?'🎉':s>=50?'👍':'💪';
+ app.innerHTML=`${head()}<div class="card" style="text-align:center"><div class="score">${s}</div><div>${emo} ${s===100?'Sempurna! Semua jawabanmu benar.':'Ada yang perlu dicek lagi, lihat pembahasan di bawah.'}</div></div>`+
+ q.parts.map((p,i)=>`<div class="res ${r[i].ok?'ok':'bad'}"><div class="tag">${r[i].ok?'✔ Benar':'✖ Belum tepat'} · ${esc(p.q)}</div><div>Jawabanmu: <code>${esc(r[i].a||'(kosong)')}</code></div><div>Kunci: <b>${esc(p.key)}</b></div><div class="ex">${p.ex}</div>${r[i].ok?'':`<button class="btn ghost sm" data-o="${i}">Jawabanku setara, tandai benar</button>`}</div>`).join('')+
+ `<div class="card"><h3>📝 Resume jawabanmu</h3><table>`+q.parts.map((p,i)=>`<tr><td>${r[i].ok?'✔':'✖'}</td><td>${esc(p.key)}</td><td class="mute">${esc(r[i].a||'-')}</td></tr>`).join('')+`</table></div>
+ <div class="row"><button class="btn ghost" id="retry">Coba lagi</button><button class="btn" id="next">${cur<Q.length-1?'Lanjut ke soal '+(cur+2):'Lihat hasil akhir'}</button></div>`;
+ app.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{res[cur][+b.dataset.o].ok=true;result()});
+ document.getElementById('retry').onclick=ask;
+ document.getElementById('next').onclick=()=>{if(cur<Q.length-1){cur++;ask()}else fin()}}
+function fin(){const tot=Math.round(res.reduce((a,r)=>a+sc(r),0)/Q.length);
+ app.innerHTML=`<div class="card" style="text-align:center"><div class="mascot">🏆</div><h1>Nilai akhir</h1><div class="score">${tot}</div><p class="mute">${tot>=80?'Siap kuis besok!':'Ulangi soal yang masih salah ya.'}</p></div><div class="card"><h3>Resume semua soal</h3><table>`+Q.map((q,i)=>`<tr><td>${i+1}. ${esc(q.n)}</td><td><b>${sc(res[i])}</b></td></tr>`).join('')+`</table></div><button class="btn" id="again">Ulang dari awal</button>`;
+ document.getElementById('again').onclick=start}
+start();
+</script>
+</body>
+</html>
